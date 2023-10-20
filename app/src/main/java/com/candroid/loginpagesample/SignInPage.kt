@@ -1,6 +1,7 @@
 package com.candroid.loginpagesample
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -96,20 +97,30 @@ fun SignInPage(context: Context, navController: NavController) {
                 val savedEmail = preferencesManager.getData("email")
                 val savedPassword = preferencesManager.getData("password")
 
-                if (savedEmail != null && savedPassword != null) {
+                if (email.isNotBlank() && password.isNotBlank()) {
                     if (savedEmail == email && savedPassword == password) {
                         println("Login succeeded: saved email: ${savedEmail} and saved password: ${savedPassword}")
-                        navController.navigate("HomePage"){
-                            popUpTo("LoginPage"){
+                        navController.navigate("HomePage") {
+                            popUpTo("LoginPage") {
                                 inclusive = true
                             }
                         }
 
                     } else {
-                        println("Login failed")
+                        Toast.makeText(
+                            context,
+                            "Email or password is not matching",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
                     }
                 } else {
-                    println("Saved email or password is null")
+                    Toast.makeText(
+                        context,
+                        "Please fill out the email and password fields to login.",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                 }
             },
             modifier = Modifier.padding(top = 32.dp)

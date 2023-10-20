@@ -1,6 +1,7 @@
 package com.candroid.loginpagesample
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -124,21 +125,25 @@ fun SignUpPage(context: Context, navController: NavController) {
             onClick = {
                 passwordVisible = false
                 println("Clicked the signup button")
-                preferencesManager.saveData("name", name)
-                preferencesManager.saveData("surname", surname)
-                preferencesManager.saveData("email", email)
-                preferencesManager.saveData("password", password)
+                if (name.isNotBlank() && surname.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
+                    preferencesManager.saveData("name", name)
+                    preferencesManager.saveData("surname", surname)
+                    preferencesManager.saveData("email", email)
+                    preferencesManager.saveData("password", password)
 
-                navController.navigate("HomePage"){
-                    popUpTo("LoginPage"){
-                        inclusive = true
+                    navController.navigate("HomePage") {
+                        popUpTo("LoginPage") {
+                            inclusive = true
+                        }
                     }
+                } else {
+                    Toast.makeText(context, "Please fill out all the fields", Toast.LENGTH_SHORT)
+                        .show()
                 }
             },
             modifier = Modifier.padding(top = 32.dp)
         ) {
             Text(text = "Sign up")
         }
-
     }
 }
